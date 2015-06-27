@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from random import randint
 import json
@@ -5,6 +6,7 @@ from time import sleep
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from ConfigParser import SafeConfigParser
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -48,6 +50,10 @@ def main(argv=None):
 
 def Init():
     global last_update
+    config = SafeConfigParser()
+    config.read('config.ini')
+    last_update = config.getint('main', 'last_update')
+    print("--- Init --- " + str(last_update))
     while True:
         print("Checking...")
         # My chat is up and running, I need to maintain it! Get me all chat updates
@@ -57,14 +63,17 @@ def Init():
             # First make sure I haven't read this update yet
             if last_update < update['update_id']:
                 last_update = update['update_id']
-                print(last_update)
+                config.set('main', 'last_update', str(last_update))
+                with open('config.ini', 'w') as f:
+                    config.write(f)
+                print("LastUpdate: " + str(last_update))
                 if 'message' in update:
                     # It's a message! Let's send it back :D
                     # requests.get(url + 'sendMessage', params=dict(chat_id=update['message']['chat']['id'], text=update['message']['text']))
                     command = update['message'].get('text','')
                     answer = ''
                     if(command):
-                        answer = GetCommand(update['message']['text'])
+                        answer = GetCommand(command)
                     if(answer):
                         requests.get(url + 'sendMessage', params=dict(chat_id=update['message']['chat']['id'], text=answer))
                         print('Answer: ' + answer)
@@ -72,7 +81,7 @@ def Init():
 
 def GetCommand(msg):
     answer = ''
-    msg = str(msg)
+    msg = msg.encode("utf-8")
     if(msg):
         command = msg.split()[:1]
         command = str(command)
