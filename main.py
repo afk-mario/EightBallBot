@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-last_update = 719885454
+last_update = 719885456
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
 url = 'https://api.telegram.org/bot%s/' % token
