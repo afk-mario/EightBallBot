@@ -62,6 +62,7 @@ def Init():
                     # It's a message! Let's send it back :D
                     # requests.get(url + 'sendMessage', params=dict(chat_id=update['message']['chat']['id'], text=update['message']['text']))
                     command = update['message']['text']
+                    answer = ''
                     if(command):
                         answer = GetCommand(update['message']['text'])
                     if(answer):
