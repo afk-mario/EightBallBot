@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-last_update = 719885456
+last_update = open('LAST_UPDATE', 'r').read().strip()
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
 url = 'https://api.telegram.org/bot%s/' % token
@@ -55,8 +55,8 @@ def Init():
         # Ok, I've got 'em. Let's iterate through each one
         for update in get_updates['result']:
             # First make sure I haven't read this update yet
-            if last_update < update['update_id']:
-                last_update = update['update_id']
+            if int(last_update) < update['update_id']:
+                last_update = int(update['update_id'])
                 print(last_update)
                 if 'message' in update:
                     # It's a message! Let's send it back :D
@@ -92,4 +92,10 @@ def GetCommand(msg):
     return answer
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        with open('LAST_UPDATE', 'wb') as f:
+            f.write(str(last_update))
+
+        raise
