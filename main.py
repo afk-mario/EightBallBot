@@ -67,8 +67,9 @@ def Init():
     else:
         return
     while True:
-        print("Checking...")
         updates = t.GetUpdates()
+        updt = Update(updates[len(updates)-1])
+        print("Checking... " + str(updt.update_id))
         # Ok, I've got 'em. Let's iterate through each one
         for update in updates:
             update = Update(update)
