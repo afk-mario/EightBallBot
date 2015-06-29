@@ -18,33 +18,80 @@ class TelegramBot:
     def CheckSettings(self):
         print(self.token)
         print(self.GetMe())
-    def GenericApiFunction(self,name=None):
+    def GenericApiFunction(self,name=None, _params=None):
         url = self.url + name
         if(None):
             return
         else:
             try:
-                requests.get(url)
+                requests.get(url,params=_params)
             except requests.exceptions.ConnectionError as e:
                 print("ConnectionError")
                 return None
             try:
-                requests.get(url, timeout=(self.timeout,10.0))
+                requests.get(url,params=_params ,timeout=(self.timeout,10.0))
             except requests.exceptions.ConnectTimeout as e:
                 print("ConnectTimeout")
                 return None
             try:
-                requests.get(url).raise_for_status()
+                requests.get(url, params=_params).raise_for_status()
             except requests.exceptions.HTTPError as e:
                 print("HTTPError: " + e.message)
                 return None
-            return requests.get(url).json().get('result', None)
+            return requests.get(url,params=_params).json().get('result', None)
     def GetMe(self):
         me = self.GenericApiFunction('getMe')
         if(me):
             self.user = User(me)
-            print(self.user.username)
-        return me
+        return User(me)
+    def SendMessage(self, _id, _text, _webPage = None, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id=_id,text=_text, disable_web_page_preview=_webPage, reply_to_message_id = _replyTo, reply_markup = _replyMarkup )
+        msg = self.GenericApiFunction('sendMessage',d)
+        return msg
+    def ForwardMessage(self, _id, _from, _msg):
+        d = dict(chat_id = _id, from_chat_id = _from, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('forwardMessage',d)
+        return msg
+    def SendPhoto(self, _id, _photo, _caption = None, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, photo = _photo, caption = _caption, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendPhoto',d)
+        return msg
+    def SendAudio(self, _id, _audio, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, audio = _audio, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendAudio',d)
+        return msg
+    def SendDocument(self, _id, _document, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, document = _document, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendDocument',d)
+        return msg
+    def SendSticker(self, _id, _sticker, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, sticker = _sticker, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendSticker',d)
+        return msg
+    def SendVideo(self, _id, _video, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, video = _video, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendVideo',d)
+        return msg
+    def SendLocation(self, _id, _latitude, _longitude, _replyTo = None, _replyMarkup = None):
+        d = dict(chat_id = _id, latitude = _latitude, longitud = _longitude, reply_to_message_id = _replyTo, reply_markup = _replyMarkup)
+        msg = self.GenericApiFunction('sendLocation',d)
+        return msg
+    def SendChatAction(self, _id, _action):
+        d = dict(chat_id = _id, action = _action)
+        msg = self.GenericApiFunction('sendChatAction',d)
+        return msg
+    def GetUserProfilePhotos(self, _id, _offset = None, _limit = None):
+        d = dict(user_id = _id, offset = _offset, limit = _limit)
+        msg = self.GenericApiFunction('getUserProfilePhotos', d)
+        return msg
+    def GetUpdates(self, _offset=None, _limit = None, _timeout = None):
+        d = dict(offset = _offset, limit = _limit, timeout = _timeout)
+        msg = self.GenericApiFunction('getUpdates', d)
+        return msg
+    def SetWebhook(_url):
+        d =  dict(url = _url,)
+        msg = self.GenericApiFunction('setWebhook')
+        return msg
 
 class User:
     def __init__(self, dictionary = {}):
