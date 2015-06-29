@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+import sys
 import requests
 from random import randint
 import json
@@ -6,7 +8,8 @@ from time import sleep
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
+from TelegramBot import TelegramBot
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -47,6 +50,9 @@ commands = {
 def main(argv=None):
     if argv is None:
         Init()
+    else:
+        t = TelegramBot(token)
+        t.CheckSettings()
 
 def Init():
     global last_update
@@ -57,7 +63,7 @@ def Init():
     while True:
         print("Checking...")
         # My chat is up and running, I need to maintain it! Get me all chat updates
-        get_updates = json.loads(requests.get(url + 'getUpdates').content)
+        get_updates = json.loads(requests.get(url + 'getUpdates').content.decode())
         # Ok, I've got 'em. Let's iterate through each one
         for update in get_updates['result']:
             # First make sure I haven't read this update yet
@@ -101,4 +107,4 @@ def GetCommand(msg):
     return answer
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
