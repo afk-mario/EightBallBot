@@ -239,6 +239,6 @@ class ForceReply:
         for k, v in dictionary.items():
             setattr(self,k,v)
         self.force_reply = True
-        self.selective   = True
+        self.selective   = None
         for k, v in dictionary.items():
             setattr(self,k,v)
