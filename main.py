@@ -9,14 +9,14 @@ import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 from configparser import SafeConfigParser
-from TelegramBot import TelegramBot
+from TelegramBot import *
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-last_update = 719885456
+config = {}
+last_update = 0
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
-url = 'https://api.telegram.org/bot%s/' % token
 helpTxt = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
 helpAnswertTxt = "Type the command /answer and then your question"
 answers = [
@@ -48,42 +48,48 @@ commands = {
 
 
 def main(argv=None):
-    if argv is None:
+    if argv is None or len(argv) <= 1:
         Init()
     else:
-        t = TelegramBot(token)
-        t.CheckSettings()
+        print("I don't accept params for the moment")
 
 def Init():
-    global last_update
-    config = SafeConfigParser()
-    config.read('config.ini')
-    last_update = config.getint('main', 'last_update')
-    print("--- Init --- " + str(last_update))
+    t = Bot(token)
+    if(t.CheckSettings()):
+        global last_update
+        global config
+        config = SafeConfigParser()
+        config.read('config.ini')
+        last_update = config.getint('main', 'last_update')
+        print("--- Init --- " + str(last_update))
+    else:
+        return
     while True:
         print("Checking...")
-        # My chat is up and running, I need to maintain it! Get me all chat updates
-        get_updates = json.loads(requests.get(url + 'getUpdates').content.decode())
+        updates = t.GetUpdates()
         # Ok, I've got 'em. Let's iterate through each one
-        for update in get_updates['result']:
-            # First make sure I haven't read this update yet
-            if last_update < update['update_id']:
-                last_update = update['update_id']
-                config.set('main', 'last_update', str(last_update))
-                with open('config.ini', 'w') as f:
-                    config.write(f)
-                print("LastUpdate: " + str(last_update))
-                if 'message' in update:
-                    # It's a message! Let's send it back :D
-                    # requests.get(url + 'sendMessage', params=dict(chat_id=update['message']['chat']['id'], text=update['message']['text']))
-                    command = update['message'].get('text','')
+        for update in updates:
+            update = Update(update)
+            if last_update < update.update_id:
+                UpdateLastUpdate(update.update_id)
+                if(update.message):
+                    msg = update.message
+                    command = msg.text
                     answer = ''
                     if(command):
                         answer = GetCommand(command)
                     if(answer):
-                        requests.get(url + 'sendMessage', params=dict(chat_id=update['message']['chat']['id'], text=answer))
+                        t.SendMessage(msg.chat.id, answer)
                         print('Answer: ' + answer)
     sleep(3)
+
+def UpdateLastUpdate(i):
+    global last_update
+    last_update = i
+    config.set('main', 'last_update', str(last_update))
+    with open('config.ini', 'w') as f:
+        config.write(f)
+    print("NewUpdate: " + str(last_update))
 
 def GetCommand(msg):
     answer = ''
@@ -100,7 +106,7 @@ def GetCommand(msg):
             print(answer)
         elif(commands['answer'] in command):
             if(words and len(words) > 1):
-                print('Question: ' + str(len(words)) + ' - ' + words[1] )
+                print('Question: ' + str(len(words)) + ' - ' + str(words[1]) )
                 answer = answers[randint(0,len(answers)-1)]
             else:
                 answer = helpAnswertTxt

@@ -2,8 +2,8 @@
 EightBallBot for Telegram
 
 #TODO
-    * Save/Read lastUpadte from disk
-    * Telegram Wrapper
+    * Improve Telegram Wrapper
+    * Move GetCommand to Wrapper
     * Force response on empty /answer
     * Improve Performance
     * Add cooler answers

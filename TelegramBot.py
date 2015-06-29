@@ -8,7 +8,7 @@
 import requests
 import json
 
-class TelegramBot:
+class Bot:
     def __init__(self, token = ''):
         self.token    = token
         self.url      = 'https://api.telegram.org/bot%s/' % self.token
@@ -16,34 +16,23 @@ class TelegramBot:
         self.user     = User()
 
     def CheckSettings(self):
-        print(self.token)
-        print(self.GetMe())
+        return self.GetMe()
     def GenericApiFunction(self,name=None, _params=None):
         url = self.url + name
+        request = {}
         if(None):
             return
         else:
             try:
-                requests.get(url,params=_params)
-            except requests.exceptions.ConnectionError as e:
-                print("ConnectionError")
+                return requests.get(url,params=_params).json().get('result', None)
+            except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout, requests.exceptions.HTTPError) as e:
+                print("Error" + str(e))
                 return None
-            try:
-                requests.get(url,params=_params ,timeout=(self.timeout,10.0))
-            except requests.exceptions.ConnectTimeout as e:
-                print("ConnectTimeout")
-                return None
-            try:
-                requests.get(url, params=_params).raise_for_status()
-            except requests.exceptions.HTTPError as e:
-                print("HTTPError: " + e.message)
-                return None
-            return requests.get(url,params=_params).json().get('result', None)
     def GetMe(self):
         me = self.GenericApiFunction('getMe')
         if(me):
             self.user = User(me)
-        return User(me)
+        return me
     def SendMessage(self, _id, _text, _webPage = None, _replyTo = None, _replyMarkup = None):
         d = dict(chat_id=_id,text=_text, disable_web_page_preview=_webPage, reply_to_message_id = _replyTo, reply_markup = _replyMarkup )
         msg = self.GenericApiFunction('sendMessage',d)
@@ -112,27 +101,29 @@ class GroupChat:
 class Message:
     def __init__(self, dictionary = {}):
         self.message_id            = 0
-        self.from_user             = User()
+        self.from_user             = {}
         self.date                  = 0
-        self.chat                  = User()
-        self.forward_from          = User()
+        self.chat                  = {}
+        self.forward_from          = {}
         self.forward_date          = 0
-        self.reply_to_message      = Message()
+        self.reply_to_message      = {}
         self.text                  = ''
-        self.audio                 = Audio()
-        self.document              = Document()
+        self.audio                 = {}
+        self.document              = {}
         self.photo                 = []
-        self.sticker               = Sticker()
-        self.video                 = Video()
-        self.contact               = Contact()
-        self.location              = Location()
-        self.new_chat_participant  = User()
-        self.left_chat_participant = User()
+        self.sticker               = {}
+        self.video                 = {}
+        self.contact               = {}
+        self.location              = {}
+        self.new_chat_participant  = {}
+        self.left_chat_participant = {}
         self.new_chat_title        = ''
         self.new_chat_photo        = []
         self.delete_chat_photo     = True
         self.delete_chat_created   = True
         for k, v in dictionary.items():
+            if(k == 'chat'):
+                v = User(v)
             setattr(self,k,v)
 
 class PhotoSize:
@@ -156,7 +147,7 @@ class Audio:
 class Document:
     def __init__(self, dictionary = {}):
         self.file_id    = ''
-        self.thumb      = PhotoSize()
+        self.thumb      = {}
         self.file_name  = ''
         self.mimme_type = ''
         self.file_size  = 0
@@ -168,7 +159,7 @@ class Sticker:
         self.file_id   = ''
         self.width     = 0
         self.height    = 0
-        self.thumb     = PhotoSize()
+        self.thumb     = {}
         self.file_size = 0
         for k, v in dictionary.items():
             setattr(self,k,v)
@@ -179,7 +170,7 @@ class Video:
         self.width      = 0
         self.height     = 0
         self.duration   = 0
-        self.thumb      = PhotoSize()
+        self.thumb      = {}
         self.mimme_type = ''
         self.file_size  = ''
         self.caption    = ''
@@ -205,8 +196,12 @@ class Location:
 class Update:
     def __init__(self, dictionary = {}):
         self.update_id = 0
-        self.message   = Message()
+        self.message   = None
         for k, v in dictionary.items():
+            if(k == 'message'):
+                v = Message(v)
+            if(k == 'update_id'):
+                v = int(v)
             setattr(self,k,v)
 
 class InputFile:
