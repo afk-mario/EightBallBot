@@ -1,6 +1,6 @@
 # EightBallBot 
 [![Build Status](https://travis-ci.org/Arlefreak/EightBallBot.svg?branch=master)](https://travis-ci.org/Arlefreak/EightBallBot)
-[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/Arlefreak/EightBallBot/master/LICENSE)
 
 [EightBallBot](https://telegram.me/EightBallBot) for [Telegram](https://telegram.org/)
 
