@@ -92,7 +92,7 @@ def Init():
     while True:
         updates = t.GetUpdates()
         updt = Update(updates[len(updates)-1])
-        logger.debug("Checking... " + str(updt.update_id))
+        # logger.debug("Checking... " + str(updt.update_id))
         for update in updates:
             update = Update(update)
             if last_update < update.update_id:
