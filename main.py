@@ -12,6 +12,7 @@ from configparser import SafeConfigParser
 from TelegramBot import *
 
 dotenv_path = join(dirname(__file__), '.env')
+ini_path = join(dirname(__file__), 'config.ini')
 load_dotenv(dotenv_path)
 config = {}
 last_update = 0
@@ -61,7 +62,7 @@ def Init():
         global last_update
         global config
         config = SafeConfigParser()
-        config.read('config.ini')
+        config.read(ini_path)
         last_update = config.getint('main', 'last_update')
         print("--- Init --- " + str(last_update))
     else:
