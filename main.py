@@ -84,7 +84,7 @@ def Init():
                     if(answer):
                         if(answer == helpAnswertTxt):
                             # TODO: Move to Wrapper 
-                            tp = dict(force_reply = True)
+                            tp = dict(force_reply = True, selective = True)
                             tmp = json.dumps(tp)
                             lastMsgId = update.message.message_id
                             t.SendMessage(msg.chat.id, answer, None, lastMsgId, tmp)
