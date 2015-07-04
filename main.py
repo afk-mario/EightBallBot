@@ -10,11 +10,14 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from configparser import SafeConfigParser
 from TelegramBot import *
+import logging
 
+log_path = join(dirname(__file__), 'log.log')
 dotenv_path = join(dirname(__file__), '.env')
 ini_path = join(dirname(__file__), 'config.ini')
 load_dotenv(dotenv_path)
 config = {}
+logger = {}
 last_update = 0
 lastWasAQuestion = False
 lastMsgId = 0
@@ -51,10 +54,29 @@ commands = {
 
 
 def main(argv=None):
+    SetLogger()
     if argv is None or len(argv) <= 1:
         Init()
     else:
         print("I don't accept params for the moment")
+
+def SetLogger():
+    global logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+    fh = logging.FileHandler(log_path)
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    logger.debug('Log Starting.')
 
 def Init():
     t = Bot(token)
@@ -64,14 +86,13 @@ def Init():
         config = SafeConfigParser()
         config.read(ini_path)
         last_update = config.getint('main', 'last_update')
-        print("--- Init --- " + str(last_update))
+        logger.debug("--- Init --- " + str(last_update))
     else:
         return
     while True:
         updates = t.GetUpdates()
         updt = Update(updates[len(updates)-1])
-        print("Checking... " + str(updt.update_id))
-        # Ok, I've got 'em. Let's iterate through each one
+        logger.debug("Checking... " + str(updt.update_id))
         for update in updates:
             update = Update(update)
             if last_update < update.update_id:
@@ -91,7 +112,7 @@ def Init():
                             t.SendMessage(msg.chat.id, answer, None, lastMsgId, tmp)
                         else:
                             t.SendMessage(msg.chat.id, answer)
-                        print('Answer: ' + answer)
+                        logger.debug('Answer: ' + answer)
     sleep(3)
 
 def UpdateLastUpdate(i):
@@ -100,7 +121,7 @@ def UpdateLastUpdate(i):
     config.set('main', 'last_update', str(last_update))
     with open('config.ini', 'w') as f:
         config.write(f)
-    print("NewUpdate: " + str(last_update))
+    logger.debug("NewUpdate: " + str(last_update))
 
 def GetCommand(msg):
     answer = ''
@@ -113,19 +134,19 @@ def GetCommand(msg):
         words = msg.split()
         if(command.endswith('@' + botName)):
             command = command[:-(len(botName)+1)]
-        print('Command: ' + str(command))
+        logger.debug('Command: ' + str(command))
         if(commands['help'] in command):
             answer = helpTxt
             lastWasAQuestion = False
         elif(commands['answer'] in command):
             if(words and len(words) > 1):
-                print('Question: ' + str(len(words)) + ' - ' + str(words[1]) )
+                logger.debug('Question: ' + str(len(words)) + ' - ' + str(words[1]) )
                 answer = answers[randint(0,len(answers)-1)]
             else:
                 answer = helpAnswertTxt
             lastWasAQuestion = True
         else:
-            print("No Command")
+            logger.debug("No Command")
             if(lastWasAQuestion):
                 answer = answers[randint(0,len(answers)-1)]
             lastWasAQuestion = False
