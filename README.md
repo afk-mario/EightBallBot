@@ -1,5 +1,5 @@
 # EightBallBot
-EightBallBot for Telegram
+[EightBallBot](https://telegram.me/EightBallBot) for [Telegram](https://telegram.org/)
 
 ![Avatar](img/EightBall.png)
 
