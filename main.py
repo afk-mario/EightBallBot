@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from configparser import SafeConfigParser
 from TelegramBot import *
 import logging
+from logging.handlers import RotatingFileHandler
 
 log_path = join(dirname(__file__), 'log.log')
 dotenv_path = join(dirname(__file__), '.env')
@@ -64,10 +65,10 @@ def SetLogger():
     global logger
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-    fh = logging.FileHandler(log_path)
+    fh = RotatingFileHandler(log_path, mode='a', maxBytes=5*1024*1024, 
+                                         backupCount=2, encoding=None, delay=0)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
@@ -92,7 +93,7 @@ def Init():
     while True:
         updates = t.GetUpdates()
         updt = Update(updates[len(updates)-1])
-        # logger.debug("Checking... " + str(updt.update_id))
+        logger.debug("Checking... " + str(updt.update_id))
         for update in updates:
             update = Update(update)
             if last_update < update.update_id:
@@ -119,7 +120,7 @@ def UpdateLastUpdate(i):
     global last_update
     last_update = i
     config.set('main', 'last_update', str(last_update))
-    with open('config.ini', 'w') as f:
+    with open(ini_path, 'w') as f:
         config.write(f)
     logger.debug("NewUpdate: " + str(last_update))
 
