@@ -1,4 +1,5 @@
-# EightBallBot
+# EightBallBot [![Build Status](https://travis-ci.org/Arlefreak/EightBallBot.svg?branch=master)](https://travis-ci.org/Arlefreak/EightBallBot)
+
 [EightBallBot](https://telegram.me/EightBallBot) for [Telegram](https://telegram.org/)
 
 ![Avatar](img/EightBall.png)
