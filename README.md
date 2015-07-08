@@ -14,3 +14,4 @@
     * Add cooler answers
     * Check if updates[] != null
     * Improve "Docs"
+    * GetUpdates long polling [Like this](https://unnikked.ga/how-to-create-your-custom-telegram-bot-using-the-long-polling-technique) [in python](http://www.pubnub.com/blog/websockets-and-long-polling-in-javascript-ruby-and-python/)
