@@ -6,6 +6,15 @@
 
 ![Avatar](img/EightBall.png)
 
+#Clone instructions
+```
+   pip install -r requirements.txt
+```
+Also you need a .env file with your token like this:
+```
+TOKEN="the telegram bot token"
+```
+
 #TODO
     * Improve Telegram Wrapper
     * Set Attr for bot objects
@@ -14,4 +23,6 @@
     * Add cooler answers
     * Check if updates[] != null
     * Improve "Docs"
-    * GetUpdates long polling [Like this](https://unnikked.ga/how-to-create-your-custom-telegram-bot-using-the-long-polling-technique) [in python](http://www.pubnub.com/blog/websockets-and-long-polling-in-javascript-ruby-and-python/)
+    * GetUpdates long polling 
+
+[Long polling example](https://unnikked.ga/how-to-create-your-custom-telegram-bot-using-the-long-polling-technique) [On Telegram](http://www.pubnub.com/blog/websockets-and-long-polling-in-javascript-ruby-and-python/)
