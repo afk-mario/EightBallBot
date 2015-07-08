@@ -12,3 +12,5 @@
     * Move GetCommand to Wrapper
     * Improve Performance
     * Add cooler answers
+    * Check if updates[] != null
+    * Improve "Docs"
