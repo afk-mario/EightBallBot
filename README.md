@@ -8,7 +8,7 @@
 
 #Clone instructions
 ```
-   pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 Also you need a .env file with your token like this:
 ```
