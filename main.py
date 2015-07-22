@@ -46,7 +46,7 @@ answers = [
 "Outlook good",
 "Yes",
 "Signs point to yes",
-"Reply hazy try again",
+"Try again",
 "Ask again later",
 "Better not tell you now",
 "Cannot predict now",
