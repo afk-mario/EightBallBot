@@ -105,7 +105,7 @@ def Init():
     else:
         return
     while True:
-        updates = t.GetUpdates()
+        updates = t.GetUpdates(last_update,None,None)
         updt = Update(updates[len(updates)-1])
         logger.debug("Checking... " + str(updt.update_id))
         for update in updates:
