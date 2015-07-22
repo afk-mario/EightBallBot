@@ -24,9 +24,17 @@ lastWasAQuestion = False
 lastMsgId = 0
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
-startTxt = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
-helpTxt  = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
-helpAnswertTxt = "Go ahead and ask me"
+startTxt = "Hi! I'm a bot developed by @arlefreak to answer you'r questions \n Available commands: \n - /start \n - /info \n - /help \n - /answer"
+infoTxt  = "Author: @arlefreak \n Github: https://github.com/Arlefreak/EightBallBot"
+helpTxt  = "/start First bot message \n /help This message \n /info Show more info about me \n /answer So I answer a yes/no question"
+helpAnswersTxt = [
+"Go ahead and ask me",
+"I'm waiting you",
+"I need a question",
+"Ask",
+"mmm",
+]
+
 answers = [
 "It is certain",
 "It is decidedly so",
@@ -48,6 +56,7 @@ answers = [
 "My sources say no",
 "Outlook not so good",
 "Very doubtful"
+"..."
 ]
 commands = {
 'start': '/start',
@@ -108,7 +117,7 @@ def Init():
                     if(command):
                         answer = GetCommand(command)
                     if(answer):
-                        if(answer == helpAnswertTxt):
+                        if(lastWasAQuestion):
                             # TODO: Move to Wrapper 
                             tp = dict(force_reply = True, selective = True)
                             tmp = json.dumps(tp)
@@ -147,7 +156,7 @@ def GetCommand(msg):
                 logger.debug('Question: ' + str(len(words)) + ' - ' + str(words[1]) )
                 answer = answers[randint(0,len(answers)-1)]
             else:
-                answer = helpAnswertTxt
+                answer = helpAnswersTxt[randint(0,len(helpAnswersTxt)-1)]
             lastWasAQuestion = True
         elif(commands['start'] in command):
             answer = startTxt
