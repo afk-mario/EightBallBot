@@ -29,7 +29,7 @@ startTxt = "Hi! I'm a bot developed by @arlefreak to answer your questions \nAva
 infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot"
 helpTxt  = "/start - First bot message \n /help - This message \n /info - Show more info about me \n /answer - I will try to answer a yes/no question"
 stopTxt  = ["You can't stop me", "You can't stop progress", "NO", "Never",
-"What is dead may never die \n But rises again, harder and stronger"]
+"What is dead may never die, \n But rises again, harder and stronger"]
 helpAnswersTxt = [
 "Go ahead and ask me",
 "I'm waiting you",
@@ -66,6 +66,7 @@ answers = [
 "JUST DO IT!",
 "Gooby pls",
 "No",
+"Ask me an honest to god question",
 "..."
 ]
 commands = {
