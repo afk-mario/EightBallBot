@@ -114,7 +114,7 @@ def Init():
                         else:
                             t.SendMessage(msg.chat.id, answer)
                         logger.debug('Answer: ' + answer)
-    sleep(3)
+    sleep(6)
 
 def UpdateLastUpdate(i):
     global last_update
