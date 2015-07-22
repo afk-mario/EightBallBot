@@ -25,7 +25,7 @@ lastWasAQuestion = False
 lastMsgId = 0
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
-startTxt = "Hi! I'm a bot developed by @arlefreak to answer you'r questions \n Available commands: \n - /start \n - /info \n - /help \n - /answer"
+startTxt = "Hi! I'm a bot developed by @arlefreak to answer you'r questions \nAvailable commands: \n- /start \n- /info \n- /help \n- /answer"
 infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot"
 helpTxt  = "/start - First bot message \n /help - This message \n /info - Show more info about me \n /answer - I will try to answer a yes/no question"
 helpAnswersTxt = [
