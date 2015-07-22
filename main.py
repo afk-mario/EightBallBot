@@ -12,6 +12,7 @@ from configparser import SafeConfigParser
 from TelegramBot import *
 import logging
 from logging.handlers import RotatingFileHandler
+import time
 
 log_path = join(dirname(__file__), 'log.log')
 dotenv_path = join(dirname(__file__), '.env')
@@ -25,7 +26,7 @@ lastMsgId = 0
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
 startTxt = "Hi! I'm a bot developed by @arlefreak to answer you'r questions \n Available commands: \n - /start \n - /info \n - /help \n - /answer"
-infoTxt  = "Author: @arlefreak \n Github: https://github.com/Arlefreak/EightBallBot"
+infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot"
 helpTxt  = "/start - First bot message \n /help - This message \n /info - Show more info about me \n /answer - I will try to answer a yes/no question"
 helpAnswersTxt = [
 "Go ahead and ask me",
@@ -128,7 +129,7 @@ def Init():
                         else:
                             t.SendMessage(msg.chat.id, answer)
                         logger.debug('Answer: ' + answer)
-    sleep(6)
+        time.sleep(2)
 
 def UpdateLastUpdate(i):
     global last_update
