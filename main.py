@@ -63,6 +63,7 @@ def main(argv=None):
 
 def SetLogger():
     global logger
+    logging.getLogger("requests").setLevel(logging.WARNING)
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
