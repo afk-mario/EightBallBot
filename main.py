@@ -28,6 +28,7 @@ token = os.environ.get("TOKEN")
 startTxt = "Hi! I'm a bot developed by @arlefreak to answer your questions \nAvailable commands: \n- /start \n- /info \n- /help \n- /answer"
 infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot"
 helpTxt  = "/start - First bot message \n /help - This message \n /info - Show more info about me \n /answer - I will try to answer a yes/no question"
+stopTxt  = "You can't stop me"
 helpAnswersTxt = [
 "Go ahead and ask me",
 "I'm waiting you",
@@ -71,7 +72,8 @@ commands = {
 'start': '/start',
 'info': '/info',
 'help': '/help',
-'answer': '/answer'
+'answer': '/answer',
+'stop': '/stop'
 }
 
 
@@ -175,6 +177,9 @@ def GetCommand(msg):
             lastWasAQuestion = False
         elif(commands['info'] in command):
             answer = infoTxt
+            lastWasAQuestion = False
+        elif(commands['stop'] in command):
+            answer = stopTxt
             lastWasAQuestion = False
         else:
             logger.debug("No Command")
