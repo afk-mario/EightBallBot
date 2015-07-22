@@ -64,7 +64,7 @@ answers = [
 "You again?",
 "JUST DO IT!",
 "Gooby pls",
-"What is dead may never die \n But rises again, harder and stronger"
+"What is dead may never die \n But rises again, harder and stronger",
 "No",
 "..."
 ]
