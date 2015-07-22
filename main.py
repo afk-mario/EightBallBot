@@ -24,7 +24,8 @@ lastWasAQuestion = False
 lastMsgId = 0
 botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
-helpTxt = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
+startTxt = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
+helpTxt  = "This a bot developed by @arlefreak to answer you'r questions \n /help to show this message \n /answer to answer you'r questions"
 helpAnswertTxt = "Go ahead and ask me"
 answers = [
 "It is certain",
@@ -49,6 +50,7 @@ answers = [
 "Very doubtful"
 ]
 commands = {
+'start': '/start',
 'help': '/help',
 'answer': '/answer'
 }
@@ -147,6 +149,9 @@ def GetCommand(msg):
             else:
                 answer = helpAnswertTxt
             lastWasAQuestion = True
+        elif(commands['start'] in command):
+            answer = startTxt
+            lastWasAQuestion = False
         else:
             logger.debug("No Command")
             if(lastWasAQuestion):
