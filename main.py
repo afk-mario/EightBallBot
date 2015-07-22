@@ -33,7 +33,6 @@ helpAnswersTxt = [
 "I'm waiting you",
 "I need a question",
 "Ask",
-"mmm",
 ]
 
 answers = [
@@ -56,7 +55,16 @@ answers = [
 "My reply is no",
 "My sources say no",
 "Outlook not so good",
-"Very doubtful"
+"Very doubtful",
+"Perhaps",
+"Um no",
+"Your future self says no",
+"Be serious",
+"You again?",
+"JUST DO IT!",
+"Gooby pls",
+"What is dead may never die \n But rises again, harder and stronger"
+"No",
 "..."
 ]
 commands = {
@@ -130,6 +138,7 @@ def Init():
                             t.SendMessage(msg.chat.id, answer)
                         logger.debug('Answer: ' + answer)
         time.sleep(2)
+    logger.Error("Exiting Loop")
 
 def UpdateLastUpdate(i):
     global last_update
