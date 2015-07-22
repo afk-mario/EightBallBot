@@ -60,6 +60,7 @@ answers = [
 ]
 commands = {
 'start': '/start',
+'info': '/info',
 'help': '/help',
 'answer': '/answer'
 }
@@ -160,6 +161,9 @@ def GetCommand(msg):
             lastWasAQuestion = True
         elif(commands['start'] in command):
             answer = startTxt
+            lastWasAQuestion = False
+        elif(commands['info'] in command):
+            answer = infoTxt
             lastWasAQuestion = False
         else:
             logger.debug("No Command")
