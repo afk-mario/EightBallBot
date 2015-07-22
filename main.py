@@ -111,6 +111,7 @@ def Init():
             update = Update(update)
             if last_update < update.update_id:
                 UpdateLastUpdate(update.update_id)
+                logger.debug("-- New Update from -- ")
                 if(update.message):
                     msg = update.message
                     command = msg.text
@@ -154,11 +155,11 @@ def GetCommand(msg):
             lastWasAQuestion = False
         elif(commands['answer'] in command):
             if(words and len(words) > 1):
-                logger.debug('Question: ' + str(len(words)) + ' - ' + str(words[1]) )
+                logger.debug('Question: ' + str(len(words)) + ' - ' + str(msg) )
                 answer = answers[randint(0,len(answers)-1)]
             else:
                 answer = helpAnswersTxt[randint(0,len(helpAnswersTxt)-1)]
-            lastWasAQuestion = True
+                lastWasAQuestion = True
         elif(commands['start'] in command):
             answer = startTxt
             lastWasAQuestion = False
@@ -169,6 +170,7 @@ def GetCommand(msg):
             logger.debug("No Command")
             if(lastWasAQuestion):
                 answer = answers[randint(0,len(answers)-1)]
+                logger.debug('Question: ' + str(len(words)) + ' - ' + str(msg) )
             lastWasAQuestion = False
     return answer
 
