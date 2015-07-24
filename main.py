@@ -10,7 +10,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from configparser import SafeConfigParser
 from TelegramBot import *
-import logging
+import logging, coloredlogs
 from logging.handlers import RotatingFileHandler
 import time
 
@@ -20,6 +20,7 @@ ini_path = join(dirname(__file__), 'config.ini')
 load_dotenv(dotenv_path)
 config = {}
 logger = {}
+t = {}
 last_update = 0
 lastWasAQuestion = False
 lastMsgId = 0
@@ -88,7 +89,7 @@ def main(argv=None):
 def SetLogger():
     global logger
     logging.getLogger("requests").setLevel(logging.WARNING)
-    logger = logging.getLogger()
+    logger = logging.getLogger("EightBallBot")
     logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 
@@ -97,33 +98,36 @@ def SetLogger():
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
-
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
-    logger.debug('Log Starting.')
+    
+    coloredlogs.install(level=logging.DEBUG, show_hostname=False, show_name=False)
+    logger.info('Log initialized')
 
 def Init():
+    global t
+    global last_update
+    global config
     t = Bot(token)
     if(t.CheckSettings()):
-        global last_update
-        global config
         config = SafeConfigParser()
         config.read(ini_path)
         last_update = config.getint('main', 'last_update')
-        logger.debug("--- Init --- " + str(last_update))
+        logger.info("-- Init --  " + str(last_update))
+        UpdatesLoop()
     else:
         return
+
+def UpdatesLoop():
+    global last_update
+    global t
     while True:
         updates = t.GetUpdates(last_update,None,None)
+        if(len(updates) < 1):
+            return
         updt = Update(updates[len(updates)-1])
-        logger.debug("Checking... " + str(updt.update_id))
+        logger.info("Checking... " + str(updt.update_id))
         for update in updates:
             update = Update(update)
             if last_update < update.update_id:
-                UpdateLastUpdate(update.update_id)
-                logger.debug("-- New Update from -- ")
                 if(update.message):
                     msg = update.message
                     command = msg.text
@@ -140,8 +144,9 @@ def Init():
                         else:
                             t.SendMessage(msg.chat.id, answer)
                         logger.debug('Answer: ' + answer)
-        time.sleep(2)
-    logger.Error("Exiting Loop")
+                UpdateLastUpdate(update.update_id)
+        time.sleep(3)
+    logger.error("ExitLoop!-----------------------------")
 
 def UpdateLastUpdate(i):
     global last_update
