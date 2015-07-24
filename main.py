@@ -33,7 +33,7 @@ stopTxt  = ["You can't stop me", "You can't stop progress", "NO", "Never",
 "What is dead may never die, \n But rises again, harder and stronger"]
 helpAnswersTxt = [
 "Go ahead and ask me",
-"I'm waiting you",
+"I'm waiting for you",
 "I need a question",
 "Ask",
 ]
