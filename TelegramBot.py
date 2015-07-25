@@ -90,6 +90,8 @@ class User:
         self.username   = ""
         for k, v in dictionary.items():
             setattr(self,k,v)
+    def __str__(self):
+        return "%s - %s - @%s" % (self.first_name, self.last_name, self.username)
 
 class GroupChat:
     def __init__(self, dictionary = {}):
@@ -122,8 +124,9 @@ class Message:
         self.delete_chat_photo     = True
         self.delete_chat_created   = True
         for k, v in dictionary.items():
-            if(k == 'chat'):
+            if(k == 'from'):
                 v = User(v)
+                setattr(self,"from_user",v)
             setattr(self,k,v)
 
 class PhotoSize:
