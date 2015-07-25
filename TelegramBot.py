@@ -127,6 +127,9 @@ class Message:
             if(k == 'from'):
                 v = User(v)
                 setattr(self,"from_user",v)
+            if(k == 'chat'):
+                v = User(v)
+                setattr(self,k,v)
             setattr(self,k,v)
 
 class PhotoSize:
