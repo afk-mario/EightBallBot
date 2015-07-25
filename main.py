@@ -28,7 +28,7 @@ botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
 startTxt = "Hi! I'm a bot developed by @arlefreak to answer your questions \nAvailable commands: \n- /start \n- /info \n- /help \n- /answer"
 infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot\n\nDisclaimer: \nBy using this bot you agree that your doing so at your own risk. Authors will not be responsible for any choices based on advices from this bot. Informations displayed on our answers are not necessarily based on facts."
-helpTxt = "Eight Ball Bot \n\nThis fortune-telling / advice seeking bot will help you with tough choices in your life. \n\n Commands: \n/answer - I will summon the dark forces to answer your question* /help - This message will be shown \n /info - Show more info about me \n\nFor Example: \n/answer will I ever find love? \n\n*make sure you as a question that can be answered with YES or NO, I will do my best to help you out."
+helpTxt = "Eight Ball Bot \n\nThis fortune-telling / advice seeking bot will help you with tough choices in your life. \n\n Commands: \n/answer - I will summon the dark forces to answer your question* /help - This message will be shown \n /info - Show more info about me \n\nFor Example: \n/answer will I ever find love? \n\n*make sure you ask a question that can be answered with YES or NO, I will do my best to help you out."
 stopTxt  = ["You can't stop me", "You can't stop progress", "NO", "Never",
 "What is dead may never die, \n But rises again, harder and stronger"]
 helpAnswersTxt = [
