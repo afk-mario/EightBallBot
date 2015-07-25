@@ -120,11 +120,11 @@ def UpdatesLoop():
     global last_update
     global t
     while True:
+        logger.info("Checking... " + str(last_update))
         updates = t.GetUpdates(last_update,None,None)
-        if(len(updates) < 1):
+        if(not updates):
+            logger.error("Couldn't get udpates")
             return
-        updt = Update(updates[len(updates)-1])
-        logger.info("Checking... " + str(updt.update_id))
         for update in updates:
             update = Update(update)
             if last_update < update.update_id:
@@ -132,6 +132,7 @@ def UpdatesLoop():
                     msg = update.message
                     command = msg.text
                     answer = ''
+                    logger.debug("From: %s" % update.message.from_user)
                     if(command):
                         answer = GetCommand(command)
                     if(answer):
@@ -165,9 +166,12 @@ def GetCommand(msg):
         command = msg.split()[:1]
         command = str(command)
         words = msg.split()
+        if("/" in command):
+            logger.debug('Command: ' + str(command))
+        else:
+            logger.debug('Message: ' + str(msg))
         if(command.endswith('@' + botName)):
             command = command[:-(len(botName)+1)]
-        logger.debug('Command: ' + str(command))
         if(commands['help'] in command):
             answer = helpTxt
             lastWasAQuestion = False
