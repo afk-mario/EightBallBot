@@ -28,7 +28,7 @@ botName = 'EightBallBot'
 token = os.environ.get("TOKEN")
 startTxt = "Hi! I'm a bot developed by @arlefreak to answer your questions \nAvailable commands: \n- /start \n- /info \n- /help \n- /answer"
 infoTxt  = "Author: @arlefreak \nGithub: https://github.com/Arlefreak/EightBallBot \nRate: https://telegram.me/storebot?start=EightBallBot\n\nDisclaimer: \nBy using this bot you agree that your doing so at your own risk. Authors will not be responsible for any choices based on advices from this bot. Informations displayed on our answers are not necessarily based on facts."
-helpTxt = "Eight Ball Bot \n\nThis fortune-telling / advice seeking bot will help you with tough choices in your life. \n\n Commands: \n/answer - I will summon the dark forces to answer your question* /help - This message will be shown \n/info - Show more info about me \n\nFor Example: \n/answer will I ever find love? \n\n*make sure you ask a question that can be answered with YES or NO, I will do my best to help you out."
+helpTxt = "Eight Ball Bot \n\nThis fortune-telling / advice seeking bot will help you with tough choices in your life. \n\n Commands: \n/answer - I will summon the dark forces to answer your question* \n/help - This message will be shown \n/info - Show more info about me \n\nFor Example: \n/answer will I ever find love? \n\n*make sure you ask a question that can be answered with YES or NO, I will do my best to help you out."
 stopTxt  = ["You can't stop me", "You can't stop progress", "NO", "Never",
 "What is dead may never die, \n But rises again, harder and stronger"]
 helpAnswersTxt = [
@@ -114,37 +114,43 @@ def Init():
         return
 
 def UpdatesLoop():
+    while True:
+        try:
+            ManageUpdates()
+            time.sleep(3)
+        except Exception:
+            logging.exception()
+    logger.error("ExitLoop!-----------------------------")
+
+def ManageUpdates():
     global last_update
     global t
-    while True:
-        logger.info("Checking... " + str(last_update))
-        updates = t.GetUpdates(last_update,None,None)
-        if(not updates):
-            logger.error("Couldn't get udpates")
-            return
-        for update in updates:
-            update = Update(update)
-            if last_update < update.update_id:
-                if(update.message):
-                    msg = update.message
-                    command = msg.text
-                    answer = ''
-                    logger.debug("From: %s" % update.message.from_user)
-                    if(command):
-                        answer = GetCommand(command)
-                    if(answer):
-                        if(lastWasAQuestion):
-                            # TODO: Move to Wrapper 
-                            tp = dict(force_reply = True, selective = True)
-                            tmp = json.dumps(tp)
-                            lastMsgId = update.message.message_id
-                            t.SendMessage(msg.chat.id, answer, None, lastMsgId, tmp)
-                        else:
-                            t.SendMessage(msg.chat.id, answer)
-                        logger.debug('Answer: ' + answer)
-                UpdateLastUpdate(update.update_id)
-        time.sleep(3)
-    logger.error("ExitLoop!-----------------------------")
+    logger.info("Checking... " + str(last_update))
+    updates = t.GetUpdates(last_update,None,None)
+    if(not updates):
+        logger.error("Couldn't get udpates")
+        return
+    for update in updates:
+        update = Update(update)
+        if last_update < update.update_id:
+            if(update.message):
+                msg = update.message
+                command = msg.text
+                answer = ''
+                logger.debug("From: %s" % update.message.from_user)
+                if(command):
+                    answer = GetCommand(command)
+                if(answer):
+                    if(lastWasAQuestion):
+                        # TODO: Move to Wrapper 
+                        tp = dict(force_reply = True, selective = True)
+                        tmp = json.dumps(tp)
+                        lastMsgId = update.message.message_id
+                        t.SendMessage(msg.chat.id, answer, None, lastMsgId, tmp)
+                    else:
+                        t.SendMessage(msg.chat.id, answer)
+                    logger.debug('Answer: ' + answer)
+            UpdateLastUpdate(update.update_id)
 
 def UpdateLastUpdate(i):
     global last_update
